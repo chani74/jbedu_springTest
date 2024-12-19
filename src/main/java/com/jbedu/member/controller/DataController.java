@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -138,5 +139,39 @@ public class DataController {
 //		model.addAttribute("memberDto", memberDto);
 		
 		return "joinOk";
+	}	
+	
+	@RequestMapping(value="/page/{pagevalue}")
+	public String pagevalue(@PathVariable String pagevalue, Model model) {
+		model.addAttribute("page",pagevalue);
+		return "page" ;
+	}
+	
+	@RequestMapping(value="/redirect")
+	public String redirect() {
+		return "redirect" ;
+	}	
+	
+	@RequestMapping(value="/redirectGood")
+	public String redirectGood(@RequestParam("number") String number, Model model) {
+		int number_int = Integer.parseInt(number);
+		
+		if (number_int > 10 ) {
+			model.addAttribute("number",number);
+//			return "redirect:redirectOk"; //  새로운 요청으로 rediectOk 요청이 실행됨
+			return "redirectOk";		// redirectOk.jsp가 실행됨
+			
+		} else {
+			model.addAttribute("number","0000");
+			return "redirectNo";
+		}
+	}	
+	@RequestMapping(value="/redirectOk")
+	public String redirectOk(@RequestParam("number") String number, Model model) {
+		int number_int = Integer.parseInt(number);
+	
+		model.addAttribute("number","안녕하세요.");
+		return "redirectOk";	
+	
 	}	
 }
